@@ -12,8 +12,8 @@ class MeshData:
         self.subregions = []
         self.nodes = []        
         self.elements = []     
-        self.n_radial_div = 10
-        self.spacing = 1.0
+        self.n_radial_div = 5
+        self.spacing = 1.2
 
 class Subregion:
     def __init__(self):
@@ -233,7 +233,7 @@ def generate_radial_mesh(mesh):
     mesh.elements = elements
     return mesh
 def visualize_radial_mesh(mesh):
-    plt.figure(figsize=(12, 10))
+    plt.figure(figsize=(8, 10))
 
     x_nodes = [node[0] for node in mesh.nodes]
     y_nodes = [node[1] for node in mesh.nodes]
