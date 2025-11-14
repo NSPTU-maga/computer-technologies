@@ -115,6 +115,15 @@ def plot_edges(nodes, elements, edges):
     plt.grid(True, alpha=0.3)
     plt.show()
 
+def write_results_to_file(edges, elem_edges_table, edge_to_elems, filename="lr2_output.txt"):
+    with open(filename, "w", encoding="utf-8") as f:
+        for eid, (a, b) in enumerate(edges):
+            elems = edge_to_elems[eid]
+            f.write(f"{eid:3d} : {a:3d} {b:3d} : {elems}\n")
+
+        for elem_id, edge_list in enumerate(elem_edges_table):
+            f.write(f"{elem_id:2d}: {edge_list}\n")
+
 def menu(nodes, elements, edges, elem_edges_table, edge_dict, edge_to_elems):
     while True:
         print("\n=============")
@@ -158,4 +167,5 @@ def menu(nodes, elements, edges, elem_edges_table, edge_dict, edge_to_elems):
 if __name__ == "__main__":
     nodes, elements = read_mesh("radial_mesh.txt")
     edges, elem_edges_table, edge_dict, edge_to_elems = build_edges(elements)
+    write_results_to_file(edges, elem_edges_table, edge_to_elems)
     menu(nodes, elements, edges, elem_edges_table, edge_dict, edge_to_elems)
