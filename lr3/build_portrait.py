@@ -374,7 +374,7 @@ def main():
 
     with open("solution_lr3_test_linear.txt", "w", encoding="utf-8") as fsol:
         fsol.write("i  x  y  u_num  u_exact  |err|\n")
-        for i in range(min(40, n)):
+        for i in range (n):
             x, y = nodes[i]
             u_exact = x + y
             err = abs(u[i] - u_exact)
