@@ -4,9 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.tri as mtri
 
-
-# ---------- чтение сетки и решения ----------
-
 def read_mesh(filename: str) -> Tuple[List[Tuple[float, float]], List[List[int]]]:
     with open(filename, "r", encoding="utf-8") as f:
         lines = [line.strip() for line in f if line.strip()]
@@ -147,7 +144,7 @@ def build_u_on_coarse(nodes: List[Tuple[float, float]],
 
 def main():
     mesh_file = "radial_mesh.txt"
-    solution_file = "solution_exp.txt"
+    solution_file = "solution_poly.txt"
 
     if len(sys.argv) >= 2:
         mesh_file = sys.argv[1]
