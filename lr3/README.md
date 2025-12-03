@@ -148,13 +148,13 @@ $$
 
 $$
 \begin{pmatrix}
-\dfrac{\partial N_i}{\partial x}
+\dfrac{\partial N_i}{\partial x} \\
 \dfrac{\partial N_i}{\partial y}
 \end{pmatrix}
-\=
+=
 J^{-1}
 \begin{pmatrix}
-\dfrac{\partial N_i}{\partial \xi}
+\dfrac{\partial N_i}{\partial \xi} \\
 \dfrac{\partial N_i}{\partial \eta}
 \end{pmatrix}.
 $$
