@@ -91,21 +91,34 @@ def get_edge_info(edge_list, edge_to_elems, edge_id):
     elems = edge_to_elems[edge_id]
     return nodes, elems
 
-def plot_edges(nodes, elements, edges):
+def plot_edges(nodes, elements, edges, show_elem_ids=True):
+    """
+    Рисует сетку и подписывает номера рёбер (красным) и
+    номера элементов (зелёным) в центрах ячеек.
+    """
     plt.figure(figsize=(10, 10))
 
-    # элементы
-    for elem in elements:
+    # элементы (границы)
+    for elem_id, elem in enumerate(elements):
         n1, n2, n3, n4, _ = elem
         xs = [nodes[n][0] for n in (n1, n2, n3, n4, n1)]
         ys = [nodes[n][1] for n in (n1, n2, n3, n4, n1)]
         plt.plot(xs, ys, "b-", linewidth=1)
 
-    # номера ребер
+    # номера ребер (красные)
     for eid, (a, b) in enumerate(edges):
         x = (nodes[a][0] + nodes[b][0]) / 2
         y = (nodes[a][1] + nodes[b][1]) / 2
-        plt.text(x, y, str(eid), fontsize=7, color="red")
+        plt.text(x, y, str(eid), fontsize=7, color="red", ha="center", va="center")
+
+    # номера элементов (зелёные) -- в центрах элементов
+    if show_elem_ids:
+        for elem_id, elem in enumerate(elements):
+            n1, n2, n3, n4, _ = elem
+            # centroid average of four vertices
+            cx = (nodes[n1][0] + nodes[n2][0] + nodes[n3][0] + nodes[n4][0]) / 4.0
+            cy = (nodes[n1][1] + nodes[n2][1] + nodes[n3][1] + nodes[n4][1]) / 4.0
+            plt.text(cx, cy, str(elem_id), fontsize=7, color="green", ha="center", va="center")
 
     # узлы
     for nid, (x, y) in nodes.items():
@@ -155,7 +168,8 @@ def menu(nodes, elements, edges, elem_edges_table, edge_dict, edge_to_elems):
             print("Принадлежит элементам:", elems)
 
         elif cmd == "4":
-            plot_edges(nodes, elements, edges)
+            # Визуализация с подписями элементов
+            plot_edges(nodes, elements, edges, show_elem_ids=True)
 
         elif cmd == "0":
             print("Выход.")
