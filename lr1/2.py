@@ -11,7 +11,7 @@ class MeshData:
         self.subregions = []
         self.nodes = []        
         self.elements = []    
-        self.n_radial_div = 10 
+        self.n_radial_div = 11 
         self.spacing = 1.1     
 
 class Subregion:
