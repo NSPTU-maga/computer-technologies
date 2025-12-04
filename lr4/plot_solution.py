@@ -3,6 +3,7 @@ from typing import List, Tuple, Dict
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.tri as mtri
+import matplotlib.colors as mcolors
 
 def read_mesh(filename: str) -> Tuple[List[Tuple[float, float]], List[List[int]]]:
     with open(filename, "r", encoding="utf-8") as f:
@@ -151,7 +152,7 @@ def main():
     if len(sys.argv) >= 3:
         solution_file = sys.argv[2]
 
-    nx_ref, ny_ref = 2, 2 
+    nx_ref, ny_ref = 2, 2
 
     nodes, quads = read_mesh(mesh_file)
     sol = read_solution_table(solution_file)
@@ -171,13 +172,39 @@ def main():
 
     fig, ax = plt.subplots(figsize=(6, 5))
 
-    tpc = ax.tripcolor(triang, u_refined, shading="gouraud", cmap="viridis")
-    fig.colorbar(tpc, ax=ax)
+    # --- Кастомная цветовая карта: низ = red, середина = green, верх = blue ---
+    vmin = float(u_refined.min())
+    vmax = float(u_refined.max())
+    if vmin == vmax:
+        vmin -= 1.0
+        vmax += 1.0
 
+    # позиция середины (0.5) можно оставить как середина диапазона;
+    # если нужно, можно привязать конкретное значение к зеленому (например 0).
+    cmap_rgb = mcolors.LinearSegmentedColormap.from_list(
+        "red_green_blue",
+        [
+            (0.0, "red"),
+            (0.5, "green"),
+            (1.0, "blue"),
+        ],
+    )
+
+    # Отрисовка с кастомной cmap
+    tpc = ax.tripcolor(triang, u_refined, shading="gouraud", cmap=cmap_rgb, vmin=vmin, vmax=vmax)
+    cb = fig.colorbar(tpc, ax=ax)
+
+    # Сделаем подписи на цветовой шкале красными
+    cb.ax.tick_params(color="red", labelcolor="red")
+    for t in cb.ax.yaxis.get_ticklines():
+        t.set_color("red")
+    for lbl in cb.ax.get_yticklabels():
+        lbl.set_color("red")
+
+    # контуры и сетка
     n_levels = 10
     levels = np.linspace(u_refined.min(), u_refined.max(), n_levels)
     ax.tricontour(triang, u_refined, levels=levels, colors="k", linewidths=0.5)
-
     ax.triplot(triang, color="black", linewidth=0.2, alpha=0.5)
 
     ax.set_aspect("equal")
